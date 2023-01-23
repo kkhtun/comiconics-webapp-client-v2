@@ -1,8 +1,6 @@
 import { Container } from "@mui/material";
 import { Image } from "mui-image";
 
-import "./PageList.css";
-
 function PageList({ currentPage, pages, scrollMode = false, pageWidth = 100 }) {
     return (
         <Container
@@ -33,8 +31,8 @@ function SinglePage({ page, pageWidth }) {
 function PageScroll({ pages, pageWidth }) {
     return pages && pages.length ? (
         <>
-            {pages.map((page) => (
-                <Image src={page} width={`${pageWidth}%`} />
+            {pages.map((page, idx) => (
+                <Image src={page} width={`${pageWidth}%`} key={idx} />
             ))}
         </>
     ) : (

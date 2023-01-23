@@ -17,7 +17,7 @@ export default function useFetchDataList({ url, initialQueries = {} }) {
                 const response = await axios.get(url, {
                     params: queries,
                 });
-                if (response.status === 200) setResponse(response.data);
+                if (response.status === 200) return setResponse(response.data);
                 throw new Error("Something went wrong");
             } catch (err) {
                 const msg =

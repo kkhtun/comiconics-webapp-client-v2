@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     Card,
     CardActions,
@@ -16,26 +17,25 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect, useState } from "react";
 import * as R from "ramda";
 import useFetchDataList from "../../hooks/useFetchDataList";
 import environment from "../../configs/environment";
 
-function ComicFilterBar({
-    search = "",
-    setSearch = () => {},
-    setSelectedGenreIds = () => {},
-    onFilter = (event) => {},
-}) {
+function ComicFilterBar({ onFilter = () => {} }) {
     const theme = useTheme();
     const inputFieldWidthAdjustments = {
         [theme.breakpoints.down("sm")]: {
             width: "100%",
             mb: 1.5,
         },
+        minWidth: 150,
     };
     const [genres, setGenres] = useState([]);
     const [selectedGenreObjects, setSelectedGenreObjects] = useState([]);
+    const [selectedGenreIds, setSelectedGenreIds] = useState([]);
+    const [search, setSearch] = useState("");
 
     const { response } = useFetchDataList({
         url: `${environment.url}/api/v1/genres`,
@@ -55,6 +55,17 @@ function ComicFilterBar({
             R.filter(R.propSatisfies(R.flip(R.includes)(selectedIds), "_id"))
         )(genres);
         setSelectedGenreObjects(genresSelected);
+    };
+
+    const onFilterButtonPressed = (event) => {
+        onFilter({ genres: selectedGenreIds, search });
+    };
+
+    const onClearFilter = (event) => {
+        setSelectedGenreIds([]);
+        setSelectedGenreObjects([]);
+        setSearch("");
+        onFilter({ genres: [], search: "" });
     };
 
     // Helper for string display in multiple select
@@ -90,13 +101,12 @@ function ComicFilterBar({
                         size="small"
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
-                        sx={{ ...inputFieldWidthAdjustments, minWidth: 200 }}
+                        sx={{ ...inputFieldWidthAdjustments }}
                     />
                     <FormControl
                         sx={{
                             mr: 1,
                             ...inputFieldWidthAdjustments,
-                            minWidth: 200,
                             [theme.breakpoints.up("sm")]: {
                                 maxWidth: 200,
                             },
@@ -129,15 +139,33 @@ function ComicFilterBar({
                             ))}
                         </Select>
                     </FormControl>
-                    <Button
-                        variant="contained"
-                        endIcon={<SearchIcon />}
-                        color="secondary"
-                        sx={{ ...inputFieldWidthAdjustments }}
-                        onClick={(event) => onFilter(event)}
+                    <Box
+                        sx={{
+                            ...inputFieldWidthAdjustments,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            "&&": { marginLeft: 0 },
+                        }}
                     >
-                        <Typography>Filter</Typography>
-                    </Button>
+                        <Button
+                            variant="contained"
+                            endIcon={<SearchIcon />}
+                            color="secondary"
+                            sx={{ flexBasis: "49%", minWidth: "5rem" }}
+                            onClick={(event) => onFilterButtonPressed(event)}
+                        >
+                            <Typography>Filter</Typography>
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            endIcon={<ClearIcon />}
+                            color="info"
+                            sx={{ flexBasis: "49%", minWidth: "5rem" }}
+                            onClick={(event) => onClearFilter(event)}
+                        >
+                            <Typography>Clear</Typography>
+                        </Button>
+                    </Box>
                 </CardActions>
                 <CardContent
                     sx={{
@@ -145,6 +173,7 @@ function ComicFilterBar({
                         alignItems: "center",
                         flexWrap: "wrap",
                         "&&": { p: 0 },
+                        flexBasis: "30%",
                     }}
                 >
                     {selectedGenreObjects.map(({ name, _id }) => (

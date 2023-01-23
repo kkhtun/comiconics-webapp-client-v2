@@ -1,9 +1,7 @@
-import {} from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import PageList from "../../components/PageList/PageList";
 import PageNavigatorBar from "../../components/PageNavigatorBar/PageNavigatorBar";
 import environment from "../../configs/environment";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 function Reader() {
     const [currentPageNo, setCurrentPageNo] = useState(1);

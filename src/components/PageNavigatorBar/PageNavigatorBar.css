@@ -1,0 +1,5 @@
+@media screen and (max-width: 380px) {
+    .page-navigator-bar-card-action {
+        padding: 0;
+    }
+}

@@ -13,6 +13,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import * as R from "ramda";
+import { useNavigate } from "react-router-dom";
 
 export default function ComicCard({ comic }) {
     const {
@@ -26,6 +27,7 @@ export default function ComicCard({ comic }) {
 
     const [imageWidth, setImageWidth] = useState(150);
     const [textWidth, setTextWidth] = useState(null);
+    const navigate = useNavigate();
     // Card's ref to determine image width
     const cardRef = useRef(null);
 
@@ -35,6 +37,7 @@ export default function ComicCard({ comic }) {
         setImageWidth(imageWidth);
         setTextWidth(cardRef.current.offsetWidth - imageWidth);
     }, [width]);
+
     return (
         <Card
             sx={{
@@ -46,6 +49,7 @@ export default function ComicCard({ comic }) {
                 },
             }}
             ref={cardRef}
+            onClick={() => navigate(`/comic/${_id}`)}
         >
             <Box
                 sx={{

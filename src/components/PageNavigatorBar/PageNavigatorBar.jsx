@@ -54,6 +54,7 @@ function PageNavigatorBar({
     // Back to Chapter List
     const backToChapterList = () => {
         // navigate
+        window.history.back();
     };
     return (
         <Card sx={{ padding: 0, my: 1 }}>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import PageList from "../../components/PageList/PageList";
 import PageNavigatorBar from "../../components/PageNavigatorBar/PageNavigatorBar";
 import environment from "../../configs/environment";
@@ -10,7 +11,8 @@ function Reader() {
 
     const [title, setTitle] = useState("");
     const [pages, setPages] = useState([]);
-    const chapter_id = "62a9b27c1fdd0e50417fd2a1";
+
+    const { chapter_id } = useParams();
 
     // Calling API
     const fetchChapter = useCallback(async () => {
@@ -26,7 +28,7 @@ function Reader() {
     // Use Effect for data fetching
     useEffect(() => {
         fetchChapter().catch(console.error);
-    }, []);
+    }, [fetchChapter]);
 
     return (
         <>

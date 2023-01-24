@@ -58,6 +58,9 @@ function ComicFilterBar({ onFilter = () => {} }) {
     };
 
     const onFilterButtonPressed = (event) => {
+        const noGenresSelected =
+            !selectedGenreIds || selectedGenreIds.length < 1;
+        if (noGenresSelected && !search) return;
         onFilter({ genres: selectedGenreIds, search });
     };
 

@@ -23,13 +23,19 @@ import {
     Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const pages = ["Home", "Genres", "Login"];
+const pages = [
+    { display: "Home", link: "/" },
+    { display: "Browse", link: "/browse" },
+    { display: "Login", link: "/login" },
+];
 const userSettings = ["Profile", "Account", "Favorites", "Logout"];
 
 function CustomAppBar() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -70,16 +76,17 @@ function CustomAppBar() {
                                 display: { xs: "none", md: "flex" },
                             }}
                         >
-                            {pages.map((page) => (
+                            {pages.map(({ display, link }) => (
                                 <Button
-                                    key={page} // register link handlers here for desktop
+                                    key={link} // register link handlers here for desktop
                                     sx={{
                                         my: 1,
                                         display: "block",
                                         fontSize: "1.1rem",
                                     }}
+                                    onClick={() => navigate(link)}
                                 >
-                                    {page}
+                                    {display}
                                 </Button>
                             ))}
                         </Box>
@@ -146,7 +153,7 @@ function CustomDrawer({ isDrawerOpen, setIsDrawerOpen }) {
         {
             display: "Home",
             icon: <HomeIcon />,
-            link: "/home",
+            link: "/",
         },
         {
             display: "Genres",
